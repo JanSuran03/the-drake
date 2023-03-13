@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
         suite01.TestSuite.class,
-        suite02.TestSuite.class
+        suite02.TestSuite.class,
+        suite03.TestSuite.class
 })
 
 public class MainSuite {
