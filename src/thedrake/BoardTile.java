@@ -29,7 +29,7 @@ public interface BoardTile extends Tile, JSONSerializable {
 
         @Override
         public void toJSON(PrintWriter writer) {
-            writer.print("empty");
+            writer.print("\"empty\"");
         }
     };
 
@@ -56,7 +56,7 @@ public interface BoardTile extends Tile, JSONSerializable {
 
         @Override
         public void toJSON(PrintWriter writer) {
-            writer.print("mountain");
+            writer.print("\"mountain\"");
         }
     };
 }

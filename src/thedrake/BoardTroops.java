@@ -130,7 +130,7 @@ public class BoardTroops implements JSONSerializable {
 
     @Override
     public void toJSON(PrintWriter writer) {
-        writer.printf("{side:\"%s\"", playingSide.name());
+        writer.printf("{\"side\":\"%s\"", playingSide.name());
         writer.printf(",\"leaderPosition\":\"%s\"", leaderPosition.toString());
         writer.printf(",\"guards\":%d,\"troopMap\":{", guards);
         List<Map.Entry<BoardPos, TroopTile>> troopMapEntries = new ArrayList<>(troopMap.entrySet());

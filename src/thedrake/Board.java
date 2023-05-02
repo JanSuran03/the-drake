@@ -49,9 +49,7 @@ public class Board implements JSONSerializable {
             for (int j = 0; j < dimension; j++) {
                 if (!(i == 0 && j == 0))
                     writer.print(",");
-                writer.print("\"");
-                boardTiles[i][j].toJSON(writer);
-                writer.print("\"");
+                boardTiles[j][i].toJSON(writer);
             }
         }
         writer.print("]}");
