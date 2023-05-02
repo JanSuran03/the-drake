@@ -88,7 +88,7 @@ public class BoardTroops {
         newTroopMap.put(target, tile.flipped());
         return new BoardTroops(playingSide,
                 newTroopMap,
-                leaderPosition.i() == target.i() && leaderPosition.j() == target.j() ? target : leaderPosition,
+                leaderPosition.i() == origin.i() && leaderPosition.j() == origin.j() ? target : leaderPosition,
                 guards);
     }
 
