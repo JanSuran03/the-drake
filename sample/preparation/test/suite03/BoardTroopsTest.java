@@ -44,7 +44,7 @@ public class BoardTroopsTest {
         // Nejdříve postavíme vůdce
         Troop drake = setup.DRAKE;
         BoardTroops troops2 = troops1.placeTroop(drake, pf.pos("a2"));
-		assertNotSame(troops1, troops2);
+        assertNotSame(troops1, troops2);
         checkEmpty(board, troops1);
 
         assertSame(0, troops2.guards());

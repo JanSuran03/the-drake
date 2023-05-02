@@ -1,5 +1,6 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,5 +116,10 @@ public class BoardPos implements TilePos {
     @Override
     public String toString() {
         return String.format("%c%d", column(), row());
+    }
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.printf("\"%c%d\"", column(), row());
     }
 }

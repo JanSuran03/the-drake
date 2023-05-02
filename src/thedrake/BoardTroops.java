@@ -1,8 +1,9 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.*;
 
-public class BoardTroops {
+public class BoardTroops implements JSONSerializable {
     private final PlayingSide playingSide;
     private final Map<BoardPos, TroopTile> troopMap;
     private final TilePos leaderPosition;
@@ -54,6 +55,10 @@ public class BoardTroops {
 
     public Set<BoardPos> troopPositions() {
         return troopMap.keySet();
+    }
+
+    public Set<Map.Entry<BoardPos, TroopTile>> troopEntries() {
+        return troopMap.entrySet();
     }
 
     public BoardTroops placeTroop(Troop troop, BoardPos target) {
@@ -121,5 +126,22 @@ public class BoardTroops {
                 newTroops,
                 target.i() == leaderPosition.i() && target.j() == leaderPosition.j() ? TilePos.OFF_BOARD : leaderPosition,
                 guards);
+    }
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.printf("{side:\"%s\"", playingSide.name());
+        writer.printf(",\"leaderPosition\":\"%s\"", leaderPosition.toString());
+        writer.printf(",\"guards\":%d,\"troopMap\":{", guards);
+        List<Map.Entry<BoardPos, TroopTile>> troopMapEntries = new ArrayList<>(troopMap.entrySet());
+        troopMapEntries.sort(Comparator.comparing(e -> e.getKey().toString()));
+        for (int i = 0; i < troopMapEntries.size(); i++) {
+            if (i != 0)
+                writer.print(",");
+            Map.Entry<BoardPos, TroopTile> entry = troopMapEntries.get(i);
+            writer.printf("\"%s\":", entry.getKey().toString());
+            entry.getValue().toJSON(writer);
+        }
+        writer.print("}}");
     }
 }

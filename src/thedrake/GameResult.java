@@ -1,5 +1,14 @@
 package thedrake;
 
-public enum GameResult {
+import java.io.PrintWriter;
+
+public enum GameResult implements JSONSerializable {
     VICTORY, DRAW, IN_PLAY;
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.print("\"");
+        writer.print(name());
+        writer.print("\"");
+    }
 }
