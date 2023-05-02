@@ -93,11 +93,8 @@ public class BoardTroops {
     }
 
     public BoardTroops troopFlip(BoardPos origin) {
-        if (!isLeaderPlaced())
-            throw new IllegalStateException("Cannot flip troop before the leader is placed.");
-
-        if (isPlacingGuards())
-            throw new IllegalStateException("Cannot flip troop before guards are placed.");
+        if (!isLeaderPlaced() || isPlacingGuards())
+            throw new IllegalStateException("Cannot flip troop before the leader and both guards are placed.");
 
         if (at(origin).isEmpty())
             throw new IllegalArgumentException("Cannot flip troop, the position is empty.");
@@ -110,11 +107,8 @@ public class BoardTroops {
     }
 
     public BoardTroops removeTroop(BoardPos target) {
-        if (!isLeaderPlaced())
-            throw new IllegalStateException("Cannot remove troop before the leader is placed.");
-
-        if (isPlacingGuards())
-            throw new IllegalStateException("Cannot remove troop before guards are placed.");
+        if (!isLeaderPlaced() || isPlacingGuards())
+            throw new IllegalStateException("Cannot remove troop before the leader and both guards is placed.");
 
         Optional<TroopTile> troopTile = at(target);
         if (troopTile.isEmpty())
@@ -123,9 +117,9 @@ public class BoardTroops {
         Map<BoardPos, TroopTile> newTroops = new HashMap<>(troopMap);
         newTroops.remove(target);
 
-        if (target.i() == leaderPosition.i() && target.j() == leaderPosition.j())
-            return new BoardTroops(playingSide, newTroops, TilePos.OFF_BOARD, guards);
-
-        return new BoardTroops(playingSide, newTroops, leaderPosition, guards);
+        return new BoardTroops(playingSide,
+                newTroops,
+                target.i() == leaderPosition.i() && target.j() == leaderPosition.j() ? TilePos.OFF_BOARD : leaderPosition,
+                guards);
     }
 }

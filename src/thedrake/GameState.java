@@ -34,11 +34,7 @@ public class GameState {
     }
 
     public Army army(PlayingSide side) {
-        if (side == PlayingSide.BLUE) {
-            return blueArmy;
-        }
-
-        return orangeArmy;
+        return side == PlayingSide.BLUE ? blueArmy : orangeArmy;
     }
 
     public Army armyOnTurn() {
@@ -46,18 +42,13 @@ public class GameState {
     }
 
     public Army armyNotOnTurn() {
-        if (sideOnTurn == PlayingSide.BLUE)
-            return orangeArmy;
-
-        return blueArmy;
+        return sideOnTurn == PlayingSide.BLUE ? orangeArmy : blueArmy;
     }
 
     public Tile tileAt(BoardPos pos) {
-        Optional<TroopTile> optTroopTile;
-        return (optTroopTile = army(PlayingSide.BLUE).boardTroops().at(pos)).isPresent()
-                ? optTroopTile.get()
-                : (optTroopTile = army(PlayingSide.ORANGE).boardTroops().at(pos)).isPresent()
-                ? optTroopTile.get()
+        Optional<TroopTile> optTroopTile = blueArmy.boardTroops().at(pos);
+        return optTroopTile.isPresent() ? optTroopTile.get()
+                : (optTroopTile = orangeArmy.boardTroops().at(pos)).isPresent() ? optTroopTile.get()
                 : board.at(pos);
     }
 
@@ -78,8 +69,8 @@ public class GameState {
     }
 
     private boolean canCaptureOn(TilePos target) {
-        if (result == GameResult.IN_PLAY
-                && target != TilePos.OFF_BOARD)
+        if (result != GameResult.IN_PLAY
+                || target == TilePos.OFF_BOARD)
             return false;
 
         Tile tile = tileAt((BoardPos) target);
@@ -104,7 +95,7 @@ public class GameState {
         Army army = armyOnTurn();
         if (!army.boardTroops().isLeaderPlaced()) {
             return sideOnTurn == PlayingSide.BLUE
-                    ? target.i() == 0
+                    ? target.j() == 0
                     : target.j() == board.dimension() - 1;
         }
 
