@@ -17,13 +17,13 @@ public interface BoardTile extends Tile {
         }
 
         @Override
-        public String toString() {
-            return "empty";
+        public List<Move> movesFrom(BoardPos pos, GameState state) {
+            return Collections.emptyList();
         }
 
         @Override
-        public List<Move> movesFrom(BoardPos pos, GameState state) {
-            return Collections.emptyList();
+        public String toString() {
+            return "empty";
         }
     };
 
@@ -39,13 +39,13 @@ public interface BoardTile extends Tile {
         }
 
         @Override
-        public String toString() {
-            return "mountain";
+        public List<Move> movesFrom(BoardPos pos, GameState state) {
+            return Collections.emptyList();
         }
 
         @Override
-        public List<Move> movesFrom(BoardPos pos, GameState state) {
-            return Collections.emptyList();
+        public String toString() {
+            return "mountain";
         }
     };
 }

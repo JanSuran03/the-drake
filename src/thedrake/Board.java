@@ -17,7 +17,7 @@ public class Board {
         return dimension;
     }
 
-    public BoardTile at(TilePos pos) {
+    public BoardTile at(BoardPos pos) {
         return boardTiles[pos.i()][pos.j()];
     }
 
@@ -25,14 +25,14 @@ public class Board {
     protected Board clone() {
         Board clone = new Board(dimension);
         for (int i = 0; i < dimension; i++)
-            System.arraycopy(this.boardTiles[i], 0, clone.boardTiles[i], 0, dimension);
+            clone.boardTiles[i] = boardTiles[i].clone();
         return clone;
     }
 
     public Board withTiles(TileAt... ats) {
         Board clone = clone();
-        for (TileAt tile : ats)
-            clone.boardTiles[tile.pos.i()][tile.pos.j()] = tile.tile;
+        for (TileAt tileAt : ats)
+            clone.boardTiles[tileAt.pos.i()][tileAt.pos.j()] = tileAt.tile;
         return clone;
     }
 

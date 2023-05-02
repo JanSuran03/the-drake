@@ -57,22 +57,19 @@ public class BoardTroops {
     }
 
     public BoardTroops placeTroop(Troop troop, BoardPos target) {
-        if (troopMap.containsKey(target)) {
+        if (at(target).isPresent()) {
             throw new IllegalArgumentException("Cannot place troop, the position is taken.");
         }
 
-        TroopTile tile = new TroopTile(troop, playingSide, TroopFace.AVERS);
         BoardTroops newBoardTroops;
         if (!isLeaderPlaced()) {
             newBoardTroops = new BoardTroops(playingSide, new HashMap<>(troopMap), target, 0);
-            newBoardTroops.troopMap.put(target, tile);
         } else if (isPlacingGuards()) {
             newBoardTroops = new BoardTroops(playingSide, new HashMap<>(troopMap), leaderPosition, guards + 1);
-            newBoardTroops.troopMap.put(target, tile);
         } else {
             newBoardTroops = clone();
-            newBoardTroops.troopMap.put(target, tile);
         }
+        newBoardTroops.troopMap.put(target, new TroopTile(troop, playingSide, TroopFace.AVERS));
         return newBoardTroops;
     }
 
@@ -80,28 +77,19 @@ public class BoardTroops {
         if (!isLeaderPlaced() || isPlacingGuards())
             throw new IllegalStateException("Cannot move troop, place the leader and guards first.");
 
-        if (origin == BoardPos.OFF_BOARD)
-            throw new IllegalArgumentException("Cannot move troop off the board.");
-
-        TroopTile tile = troopMap.get(origin);
-        if (tile == null)
+        if (at(origin).isEmpty())
             throw new IllegalArgumentException("Cannot move troop, the troop tile is empty.");
 
-        if (troopMap.containsKey(target))
+        if (at(target).isPresent())
             throw new IllegalArgumentException("Cannot move troop, the position is taken.");
 
-        if (leaderPosition.i() == origin.i() && leaderPosition.j() == origin.j()) {
-            BoardTroops newBoardTroops = new BoardTroops(playingSide, new HashMap<>(troopMap),
-                    leaderPosition.step(target.i() - origin.i(), target.j() - origin.j()), guards);
-            newBoardTroops.troopMap.put(target, tile.flipped());
-            newBoardTroops.troopMap.remove(origin);
-            return newBoardTroops;
-        }
-
-        BoardTroops newBoardTroops = clone();
-        troopMap.put(target, tile.flipped());
-        troopMap.remove(origin);
-        return newBoardTroops;
+        HashMap<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
+        TroopTile tile = newTroopMap.remove(origin);
+        newTroopMap.put(target, tile.flipped());
+        return new BoardTroops(playingSide,
+                newTroopMap,
+                leaderPosition.i() == target.i() && leaderPosition.j() == target.j() ? target : leaderPosition,
+                guards);
     }
 
     public BoardTroops troopFlip(BoardPos origin) {

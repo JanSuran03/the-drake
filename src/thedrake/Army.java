@@ -8,16 +8,10 @@ public class Army {
     private final List<Troop> captured;
 
     public Army(PlayingSide playingSide, List<Troop> stack) {
-        this(
-                new BoardTroops(playingSide),
-                stack,
-                Collections.emptyList());
+        this(new BoardTroops(playingSide), stack, Collections.emptyList());
     }
 
-    public Army(
-            BoardTroops boardTroops,
-            List<Troop> stack,
-            List<Troop> captured) {
+    public Army(BoardTroops boardTroops, List<Troop> stack, List<Troop> captured) {
         this.boardTroops = boardTroops;
         this.stack = stack;
         this.captured = captured;
@@ -49,13 +43,9 @@ public class Army {
         if (boardTroops.at(target).isPresent())
             throw new IllegalStateException();
 
-        List<Troop> newStack = new ArrayList<Troop>(
-                stack.subList(1, stack.size()));
+        List<Troop> newStack = new ArrayList<>(stack.subList(1, stack.size()));
 
-        return new Army(
-                boardTroops.placeTroop(stack.get(0), target),
-                newStack,
-                captured);
+        return new Army(boardTroops.placeTroop(stack.get(0), target), newStack, captured);
     }
 
     public Army troopStep(BoardPos origin, BoardPos target) {

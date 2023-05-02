@@ -1,5 +1,8 @@
 package thedrake;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static thedrake.TroopFace.*;
 
 public class TroopTile implements Tile {
@@ -36,5 +39,13 @@ public class TroopTile implements Tile {
 
     public TroopTile flipped() {
         return new TroopTile(troop, side, face == AVERS ? REVERS : AVERS);
+    }
+
+    public List<Move> movesFrom(BoardPos origin, GameState state) {
+        List<Move> result = new ArrayList<>();
+        for (TroopAction action : troop.actions(face)) {
+            result.addAll(action.movesFrom(origin, side, state));
+        }
+        return result;
     }
 }

@@ -38,12 +38,9 @@ public class BoardPos implements TilePos {
         int newi = i + columnStep;
         int newj = j + rowStep;
 
-        if ((newi >= 0 && newi < dimension) &&
-                (newj >= 0 && newj < dimension)) {
-            return new BoardPos(dimension, newi, newj);
-        }
-
-        return TilePos.OFF_BOARD;
+        return (newi >= 0 && newi < dimension) && (newj >= 0 && newj < dimension)
+                ? new BoardPos(dimension, newi, newj)
+                : TilePos.OFF_BOARD;
     }
 
     @Override
@@ -78,13 +75,8 @@ public class BoardPos implements TilePos {
         if (pos == TilePos.OFF_BOARD)
             return false;
 
-        if (this.i == pos.i() && Math.abs(this.j - pos.j()) == 1)
-            return true;
-
-        if (this.j == pos.j() && Math.abs(this.i - pos.i()) == 1)
-            return true;
-
-        return false;
+        return this.i == pos.i() && Math.abs(this.j - pos.j()) == 1
+                || this.j == pos.j() && Math.abs(this.i - pos.i()) == 1;
     }
 
     @Override
@@ -117,11 +109,7 @@ public class BoardPos implements TilePos {
         if (getClass() != obj.getClass())
             return false;
         BoardPos other = (BoardPos) obj;
-        if (i != other.i)
-            return false;
-        if (j != other.j)
-            return false;
-        return true;
+        return i == other.i && j == other.j;
     }
 
     @Override
