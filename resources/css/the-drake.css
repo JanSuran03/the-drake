@@ -1,0 +1,25 @@
+.menu-view {
+    -fx-spacing: 10;
+}
+
+.menu-view > .button {
+    -fx-font-size: 1.5em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A1B1F;
+    -fx-background-color: #aaffff;
+
+    -fx-background-radius: 6px;
+    -fx-border-color: #66aaaa;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+/* hover: set background color to 88cccc */
+.menu-view > .button:hover {
+    -fx-background-color: #88cccc;
+}
+
+/* pressed: set background color to 66aaaa */
+.menu-view > .button:pressed {
+    -fx-background-color: #66aaaa;
+}

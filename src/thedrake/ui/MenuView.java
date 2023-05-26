@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 public class MenuView extends VBox {
     final Stage stage ;
     public MenuView(Stage stage) {
+        this.getStyleClass().add("menu-view");
         this.setAlignment(javafx.geometry.Pos.CENTER);
         this.getChildren().add(new Button("Play"));
         this.getChildren().add(new Button("Play vs AI"));
