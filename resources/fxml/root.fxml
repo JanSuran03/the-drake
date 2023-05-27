@@ -3,16 +3,16 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
-<StackPane alignment="CENTER" prefWidth="800" prefHeight="600"
+<?import javafx.scene.control.Label?>
+<StackPane alignment="CENTER" prefWidth="800" prefHeight="600" styleClass="root-view"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedrake.ui.controllers.QuitGameController">
-    <children>
-        <VBox styleClass="menu-view" alignment="CENTER">
-            <children>
-                <Button text="Play on this computer" />
-                <Button text="Play vs AI" />
-                <Button text="Play online" />
-                <Button text="Quit" onAction="#quit" />
-            </children>
+    <VBox styleClass="menu-view" alignment="CENTER">
+        <Label text="The Drake" styleClass="title"/>
+        <VBox styleClass="menu-buttons" alignment="CENTER">
+            <Button text="Play on this computer"/>
+            <Button text="Play vs AI"/>
+            <Button text="Play online"/>
+            <Button text="Quit" onAction="#quit"/>
         </VBox>
-    </children>
+    </VBox>
 </StackPane>

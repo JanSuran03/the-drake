@@ -1,8 +1,12 @@
 .menu-view {
+    -fx-spacing: 20;
+}
+
+.menu-buttons {
     -fx-spacing: 10;
 }
 
-.menu-view > .button {
+.menu-buttons > .button {
     -fx-font-size: 1.5em;
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
@@ -15,11 +19,24 @@
 }
 
 /* hover: set background color to 88cccc */
-.menu-view > .button:hover {
+.menu-buttons > .button:hover {
     -fx-background-color: #88cccc;
 }
 
 /* pressed: set background color to 66aaaa */
-.menu-view > .button:pressed {
+.menu-buttons > .button:pressed {
     -fx-background-color: #66aaaa;
+}
+
+/* background: images/the-drake-bg.jpeg */
+.root-view {
+    -fx-background-image: url("../images/the-drake-bg.jpeg");
+    -fx-background-size: cover;
+}
+/* label with some fancy fantasy font */
+.title {
+    -fx-font-family: "Old English Text MT";
+    -fx-font-size: 5em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A1B1F;
 }
