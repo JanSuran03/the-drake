@@ -1,3 +1,11 @@
+/* background: images/the-drake-bg.jpeg */
+.app-view {
+    -fx-background-image: url("../images/the-drake-bg.jpeg");
+    -fx-background-size: cover;
+    -fx-pref-width: 800;
+    -fx-pref-height: 600;
+}
+
 .menu-view {
     -fx-spacing: 20;
 }
@@ -28,11 +36,6 @@
     -fx-background-color: #66aaaa;
 }
 
-/* background: images/the-drake-bg.jpeg */
-.root-view {
-    -fx-background-image: url("../images/the-drake-bg.jpeg");
-    -fx-background-size: cover;
-}
 /* label with some fancy fantasy font */
 .title {
     -fx-font-family: "Old English Text MT";
