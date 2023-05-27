@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<StackPane alignment="CENTER" prefWidth="800" prefHeight="600"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedrake.ui.controllers.QuitGameController">
+    <children>
+        <VBox styleClass="menu-view" alignment="CENTER">
+            <children>
+                <Button text="Play on this computer" />
+                <Button text="Play vs AI" />
+                <Button text="Play online" />
+                <Button text="Quit" onAction="#quit" />
+            </children>
+        </VBox>
+    </children>
+</StackPane>
