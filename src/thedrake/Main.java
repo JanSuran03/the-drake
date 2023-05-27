@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import thedrake.ui.EventBus;
-//import thedrake.ui.GameView;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +14,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            //GameView gameView = new GameView(stage);
             stage.setTitle("The Drake");
             Scene scene = new Scene(new FXMLLoader().load(Files.newInputStream(Paths.get("resources/fxml/root.fxml"))));
             scene.getStylesheets().add(Paths.get("resources/css/the-drake.css").toUri().toString());

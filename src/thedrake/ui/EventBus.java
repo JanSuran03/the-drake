@@ -5,7 +5,7 @@ import javafx.event.Event;
 import java.util.HashMap;
 
 public class EventBus {
-    public static interface EventHandler {
+    public interface EventHandler {
         void handleEvent(Event event);
     }
 
