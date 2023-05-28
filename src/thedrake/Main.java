@@ -9,18 +9,16 @@ import thedrake.ui.AppView;
 import thedrake.ui.EventBus;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
             stage.setTitle("The Drake");
-            Parent menu = new FXMLLoader().load(Files.newInputStream(Paths.get("resources/fxml/menu.fxml")));
-            Parent game = new FXMLLoader().load(Files.newInputStream(Paths.get("resources/fxml/game.fxml")));
+            Parent menu = new FXMLLoader().load(getClass().getResource("/fxml/menu.fxml"));
+            Parent game = new FXMLLoader().load(getClass().getResource("/fxml/game.fxml"));
             Scene scene = new Scene(new AppView().setRoot(menu), 800, 600);
-            scene.getStylesheets().add(Paths.get("resources/css/the-drake.css").toUri().toString());
+            scene.getStylesheets().add(getClass().getResource("/css/the-drake.css").toExternalForm());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());
             EventBus.registerHandler("startGame", e -> scene.setRoot(new AppView().setRoot(game)));

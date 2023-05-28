@@ -3,8 +3,6 @@ package thedrake.ui;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.nio.file.Paths;
-
 public class BoardView extends GridPane {
     public static final int GRID_SIZE = 4;
 
@@ -20,7 +18,7 @@ public class BoardView extends GridPane {
     }
 
     private ImageView createImageView(String name) {
-        ImageView imageView = new ImageView(Paths.get("/images/" + name).toString());
+        ImageView imageView = new ImageView(getClass().getResource("/images/" + name).toExternalForm());
 
         imageView.getStyleClass().add("board-tile-image");
         return imageView;
