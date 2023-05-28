@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import thedrake.ui.AppView;
 import thedrake.ui.EventBus;
+import thedrake.ui.GameView;
 
 import java.io.IOException;
 
@@ -16,12 +17,12 @@ public class Main extends Application {
         try {
             stage.setTitle("The Drake");
             Parent menu = new FXMLLoader().load(getClass().getResource("/fxml/menu.fxml"));
-            Parent game = new FXMLLoader().load(getClass().getResource("/fxml/game.fxml"));
+            GameView gameView = new GameView();
             Scene scene = new Scene(new AppView().setRoot(menu), 800, 600);
             scene.getStylesheets().add(getClass().getResource("/css/the-drake.css").toExternalForm());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());
-            EventBus.registerHandler("startGame", e -> scene.setRoot(new AppView().setRoot(game)));
+            EventBus.registerHandler("startGame", e -> scene.setRoot(new AppView().setRoot(gameView)));
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load FXML file: " + e.getMessage(), e);
