@@ -1,13 +1,9 @@
-/* background: images/the-drake-bg.jpeg */
-.app-view {
+.menu-view {
+    -fx-spacing: 20;
     -fx-background-image: url("../images/the-drake-bg.jpeg");
     -fx-background-size: cover;
     -fx-pref-width: 800;
     -fx-pref-height: 600;
-}
-
-.menu-view {
-    -fx-spacing: 20;
 }
 
 .menu-buttons {
@@ -42,4 +38,13 @@
     -fx-font-size: 5em;
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
+}
+.game-board {
+    -fx-hgap: 16;
+    -fx-vgap: 16;
+}
+
+.board-tile-image {
+    -fx-fit-width: 120;
+    -fx-fit-height: 80;
 }

@@ -13,16 +13,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Main extends Application {
-    static FXMLLoader loader = new FXMLLoader();
     @Override
     public void start(Stage stage) {
         try {
             stage.setTitle("The Drake");
-            Parent menu = loader.load(Files.newInputStream(Paths.get("resources/fxml/menu.fxml")));
+            Parent menu = new FXMLLoader().load(Files.newInputStream(Paths.get("resources/fxml/menu.fxml")));
+            Parent game = new FXMLLoader().load(Files.newInputStream(Paths.get("resources/fxml/game.fxml")));
             Scene scene = new Scene(new AppView().setRoot(menu), 800, 600);
             scene.getStylesheets().add(Paths.get("resources/css/the-drake.css").toUri().toString());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());
+            EventBus.registerHandler("startGame", e -> scene.setRoot(new AppView().setRoot(game)));
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load FXML file: " + e.getMessage(), e);

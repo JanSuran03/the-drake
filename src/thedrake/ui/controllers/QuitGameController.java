@@ -6,4 +6,8 @@ public class QuitGameController {
     public void quit() {
         EventBus.fireEvent("quitApplication", null);
     }
+
+    public void startGame() {
+        EventBus.fireEvent("startGame", null);
+    }
 }
