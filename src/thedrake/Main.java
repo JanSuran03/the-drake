@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import thedrake.ui.AppView;
 import thedrake.ui.EventBus;
@@ -18,7 +19,7 @@ public class Main extends Application {
             stage.setTitle("The Drake");
             Parent menu = new FXMLLoader().load(getClass().getResource("/fxml/menu.fxml"));
             GameView gameView = new GameView();
-            Scene scene = new Scene(new AppView().setRoot(menu), 800, 600);
+            Scene scene = new Scene(new AppView().setRoot(menu), 900, 700);
             scene.getStylesheets().add(getClass().getResource("/css/the-drake.css").toExternalForm());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());

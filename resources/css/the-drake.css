@@ -32,13 +32,20 @@
     -fx-background-color: #66aaaa;
 }
 
-/* label with some fancy fantasy font */
+/* label with some fancy font */
 .title {
     -fx-font-family: "Old English Text MT";
     -fx-font-size: 5em;
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
 }
+
+.game-view {
+    -fx-spacing: 20px;
+    -fx-background: #ff0000;
+    -fx-alignment: center;
+}
+
 .game-board {
     -fx-vgap: 8px;
     -fx-hgap: 8px;

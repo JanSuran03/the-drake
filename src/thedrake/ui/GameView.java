@@ -14,6 +14,7 @@ public class GameView extends VBox {
         StackView stackView2 = new StackView(PlayingSide.ORANGE, gameState.army(PlayingSide.ORANGE).stack());
         stackView2.getStyleClass().add("stack");
         stackView2.update();
+        this.getStyleClass().add("game-view");
         this.getChildren().add(stackView);
         this.getChildren().add(new BoardView());
         this.getChildren().add(stackView2);
