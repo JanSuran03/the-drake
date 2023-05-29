@@ -1,7 +1,5 @@
 package thedrake.ui;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
@@ -10,11 +8,6 @@ public class GameView extends VBox {
 
     public GameView() {
         gameState = createGameState();
-        HBox stack = new HBox();
-        var stk = gameState.army(PlayingSide.BLUE).stack();
-        for (var troop : stk) {
-            System.out.println(troop.name());
-        }
         StackView stackView = new StackView(PlayingSide.BLUE, gameState.army(PlayingSide.BLUE).stack());
         stackView.update();
         StackView stackView2 = new StackView(PlayingSide.ORANGE, gameState.army(PlayingSide.ORANGE).stack());

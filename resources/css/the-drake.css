@@ -40,11 +40,20 @@
     -fx-text-fill: #1A1B1F;
 }
 .game-board {
-    -fx-hgap: 16;
-    -fx-vgap: 16;
+    -fx-vgap: 8px;
+    -fx-hgap: 8px;
+    -fx-alignment: center;
+}
+
+.board-tile {
+    -fx-background-color: #d5d5d5;
+    -fx-pref-width: 108px;
+    -fx-pref-height: 108px;
+    -fx-min-width: 108px;
+    -fx-min-height: 108px;
+    -fx-alignment: center;
 }
 
 .board-tile-image {
-    -fx-fit-width: 120;
-    -fx-fit-height: 80;
+    -fx-alignment: center;
 }
