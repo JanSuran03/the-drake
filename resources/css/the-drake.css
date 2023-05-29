@@ -57,3 +57,8 @@
 .board-tile-image {
     -fx-alignment: center;
 }
+
+.stack {
+    -fx-spacing: 8px;
+    -fx-alignment: center;
+}

@@ -9,8 +9,10 @@ public class GameView extends VBox {
     public GameView() {
         gameState = createGameState();
         StackView stackView = new StackView(PlayingSide.BLUE, gameState.army(PlayingSide.BLUE).stack());
+        stackView.getStyleClass().add("stack");
         stackView.update();
         StackView stackView2 = new StackView(PlayingSide.ORANGE, gameState.army(PlayingSide.ORANGE).stack());
+        stackView2.getStyleClass().add("stack");
         stackView2.update();
         this.getChildren().add(stackView);
         this.getChildren().add(new BoardView());
