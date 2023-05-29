@@ -20,18 +20,8 @@ public class GameView extends VBox {
         StackView stackView2 = new StackView(PlayingSide.ORANGE, gameState.army(PlayingSide.ORANGE).stack());
         stackView2.update();
         this.getChildren().add(stackView);
+        this.getChildren().add(new BoardView());
         this.getChildren().add(stackView2);
-
-        /*HBox stack2 = new HBox();
-        stack2.getChildren().add(new Label("Orange:"));
-        stack2.getChildren().add(new Label("Bar"));
-
-        BoardView boardView = new BoardView();
-        boardView.getStyleClass().add("game-board");
-
-        getChildren().add(stack1);
-        getChildren().add(boardView);
-        getChildren().add(stack2);*/
     }
 
     public GameState createGameState() {

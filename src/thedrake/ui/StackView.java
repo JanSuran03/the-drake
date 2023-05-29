@@ -21,8 +21,6 @@ public class StackView extends HBox {
     public void update() {
         this.getChildren().clear();
         for (var troop : stack) {
-            System.out.println(getClass().getResource("/images/" + side + troop.name()
-                    + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png").toExternalForm());
             this.getChildren().add(new ImageView(getClass().getResource("/images/" + side + troop.name()
                     + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png").toExternalForm()));
         }
