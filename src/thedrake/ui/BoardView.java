@@ -3,20 +3,36 @@ package thedrake.ui;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import thedrake.BoardPos;
+import thedrake.BoardTile;
+import thedrake.GameState;
+import thedrake.PositionFactory;
 
 public class BoardView extends GridPane {
     public static final int GRID_SIZE = 4;
 
+    PositionFactory pf;
+
     public BoardView() {
         this.getStyleClass().add("game-board");
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                if ((row == 1 || row == 2) && row == col)
-                    add(new TileView("mountain.png"), row, col);
-                else
-                    add(new TileView(), col, row);
+    }
+
+    public void setPf(PositionFactory pf) {
+        this.pf = pf;
+    }
+
+    public BoardView setBoard(GameState gameState) {
+        this.getChildren().clear();
+        for (int i = 0; i < GRID_SIZE; i++)
+            for (int j = 0; j < GRID_SIZE; j++) {
+                // mountain?
+                if (gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN) {
+                    this.add(new TileView("mountain.png"), i, j);
+                } else {
+                    this.add(new TileView("move.png"), i, j);
+                }
             }
-        }
+        return this;
     }
 
     static class TileView extends StackPane {

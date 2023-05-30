@@ -13,13 +13,13 @@ public class StackView extends HBox {
 
     PlayingSide playingSide;
 
-    public StackView(PlayingSide playingSide, List<Troop> stack) {
-        this.stack = stack;
+    public StackView(PlayingSide playingSide) {
         this.playingSide = playingSide;
     }
 
-    public void update() {
+    public void setStack(List<Troop> stack) {
         this.getChildren().clear();
+        this.stack = stack;
         for (var troop : stack) {
             this.getChildren().add(new ImageView(getClass().getResource("/images/" + side + troop.name()
                     + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png").toExternalForm()));
