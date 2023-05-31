@@ -27,10 +27,9 @@ public class StackView extends HBox {
             }
         });
         for (var troop : stack) {
-            TroopView troopView = new TroopView(side + troop.name() + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png");troopView.setOnMouseClicked(e -> {
-                EventBus.fireEvent("unset-selected-board", null);
-                EventBus.fireEvent("unset-selected-stack-1", null);
-                EventBus.fireEvent("unset-selected-stack-2", null);
+            TroopView troopView = new TroopView(side + troop.name() + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png");
+            troopView.setOnMouseClicked(e -> {
+                EventBus.fireEvent("unset-all-selected", null);
                 troopView.setBorder(true);
             });
             this.getChildren().add(troopView);

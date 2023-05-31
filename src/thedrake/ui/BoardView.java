@@ -35,20 +35,19 @@ public class BoardView extends GridPane {
             for (int j = 0; j < GRID_SIZE; j++) {
                 TileView tileView = new TileView();
                 tiles[i][j] = tileView;
-                tileView.setImage(gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN
-                        ? "mountain.png" : "move.png");
+                if (gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN)
+                    tileView.setImage("mountain.png");
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
-                    EventBus.fireEvent("unset-selected-board", null);
-                    EventBus.fireEvent("unset-selected-stack-1", null);
-                    EventBus.fireEvent("unset-selected-stack-2", null);
+                    EventBus.fireEvent("unset-all-selected", null);
                     tiles[finalI][finalJ].setBorder(true);
                     selected[0] = finalI;
                     selected[1] = finalJ;
                 });
                 this.add(tileView, i, j);
             }
+
         return this;
     }
 

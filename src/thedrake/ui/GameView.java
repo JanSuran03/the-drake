@@ -34,7 +34,8 @@ public class GameView extends HBox {
     public void startGame() {
         Board board = new Board(4);
         PositionFactory pf = board.positionFactory();
-        board = board.withTiles(new Board.TileAt(pf.pos("a2"), BoardTile.MOUNTAIN));
+        board = board.withTiles(new Board.TileAt(pf.pos("b2"), BoardTile.MOUNTAIN),
+                new Board.TileAt(pf.pos("c3"), BoardTile.MOUNTAIN));
         GameState gameState = new StandardDrakeSetup().startState(board);
         this.boardView().setPf(pf);
         this.boardView().setBoard(gameState);
@@ -42,6 +43,11 @@ public class GameView extends HBox {
         this.troopFieldsView.pf = pf;
         this.blueStack().setStack(gameState.army(PlayingSide.BLUE).stack());
         this.orangeStack().setStack(gameState.army(PlayingSide.ORANGE).stack());
+        EventBus.registerHandler("unset-all-selected", e -> {
+            EventBus.fireEvent("unset-selected-board", null);
+            EventBus.fireEvent("unset-selected-stack-1", null);
+            EventBus.fireEvent("unset-selected-stack-2", null);
+        });
     }
 
     static class TroopFieldsView extends VBox {
@@ -67,8 +73,12 @@ public class GameView extends HBox {
     }
 
     static class StateView extends VBox {
+        public Label stateLabel = new Label();
+        public State state = State.BLUE_ON_TURN;
+
         public StateView() {
-            this.getChildren().add(new Label("State"));
+            stateLabel.setText(state.toString());
+            this.getChildren().add(stateLabel);
         }
 
         enum State {
