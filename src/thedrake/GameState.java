@@ -86,7 +86,7 @@ public class GameState implements JSONSerializable {
         return canStepFrom(origin) && canCaptureOn(target);
     }
 
-    public boolean canPlaceFromStack(TilePos target) { // todo?
+    public boolean canPlaceFromStack(TilePos target) {
         if (result != GameResult.IN_PLAY
                 || target == TilePos.OFF_BOARD
                 || armyOnTurn().stack().isEmpty()

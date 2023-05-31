@@ -1,12 +1,10 @@
 package thedrake.ui;
 
-import javafx.event.Event;
-
 import java.util.HashMap;
 
 public class EventBus {
     public interface EventHandler {
-        void handleEvent(Event event);
+        void handleEvent(HashMap<String, Object> event);
     }
 
     private static final HashMap<String, EventHandler> handlers = new HashMap<>();
@@ -19,7 +17,7 @@ public class EventBus {
         handlers.remove(eventID);
     }
 
-    public static void fireEvent(String eventID, Event event) {
+    public static void fireEvent(String eventID, HashMap<String, Object> event) {
         if (handlers.containsKey(eventID)) {
             handlers.get(eventID).handleEvent(event);
         }

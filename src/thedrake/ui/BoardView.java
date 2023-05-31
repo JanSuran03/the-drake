@@ -28,6 +28,9 @@ public class BoardView extends GridPane {
         this.getChildren().clear();
         EventBus.registerHandler("unset-selected-board", e -> {
             tiles[selected[0]][selected[1]].setBorder(false);
+            for (int i = 0; i < GRID_SIZE; i++)
+                for (int j = 0; j < GRID_SIZE; j++)
+                    tiles[i][j].setCanMoveOn(false);
             selected[0] = 0;
             selected[1] = 0;
         });
@@ -54,6 +57,15 @@ public class BoardView extends GridPane {
     static class TileView extends StackPane {
         ImageView imageView;
 
+        ImageView moveImageView;
+
+        boolean canMoveOn = false;
+
+        void createMoveImageView() {
+            moveImageView = new ImageView("/images/move.png");
+            moveImageView.setOpacity(0.5);
+        }
+
         public TileView(String name) {
             this.getStyleClass().add("board-tile");
             if (name == null)
@@ -73,6 +85,20 @@ public class BoardView extends GridPane {
                 this.getStyleClass().add("selected");
             else
                 this.getStyleClass().remove("selected");
+        }
+
+        public void setCanMoveOn(boolean canMoveOn) {
+            if (canMoveOn) {
+                if (moveImageView == null)
+                    createMoveImageView();
+                if (!this.getChildren().contains(moveImageView))
+                    this.getChildren().add(moveImageView);
+                canMoveOn = true;
+            } else {
+                if (moveImageView != null)
+                    this.getChildren().remove(moveImageView);
+                canMoveOn = false;
+            }
         }
 
         public TileView() {

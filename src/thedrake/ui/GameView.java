@@ -29,6 +29,7 @@ public class GameView extends HBox {
         this.troopFieldsView = troopFieldsView;
         this.getChildren().add(troopFieldsView);
         this.getChildren().add(stateView);
+        this.getStyleClass().add("game-view");
     }
 
     public void startGame() {
@@ -43,10 +44,25 @@ public class GameView extends HBox {
         this.troopFieldsView.pf = pf;
         this.blueStack().setStack(gameState.army(PlayingSide.BLUE).stack());
         this.orangeStack().setStack(gameState.army(PlayingSide.ORANGE).stack());
+        this.blueStack().setHighlighted(true);
+        this.stateView = new StateView();
         EventBus.registerHandler("unset-all-selected", e -> {
             EventBus.fireEvent("unset-selected-board", null);
             EventBus.fireEvent("unset-selected-stack-1", null);
             EventBus.fireEvent("unset-selected-stack-2", null);
+        });
+
+        EventBus.registerHandler("show-possible-moves", ev_data -> {
+            if (ev_data.get("side") == gameState.sideOnTurn()) {
+                for (int i = 0; i < gameState.board().dimension(); i++)
+                    for (int j = 0; j < gameState.board().dimension(); j++) {
+                        BoardPos pos = pf.pos(i, j);
+                        if (gameState.canPlaceFromStack(pos)) {
+                            boardView().tiles[i][j].setCanMoveOn(true);
+                            System.out.println("Can place from stack: " + pos);
+                        }
+                    }
+            }
         });
     }
 
@@ -74,11 +90,13 @@ public class GameView extends HBox {
 
     static class StateView extends VBox {
         public Label stateLabel = new Label();
-        public State state = State.BLUE_ON_TURN;
+        public State state;
 
         public StateView() {
+            state = State.BLUE_ON_TURN;
             stateLabel.setText(state.toString());
             this.getChildren().add(stateLabel);
+            this.getStyleClass().add("state-view");
         }
 
         enum State {

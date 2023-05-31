@@ -14,7 +14,7 @@
     -fx-font-size: 1.5em;
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
-    -fx-background-color: #aaffff;
+    -fx-background-color: #aaffff; /* light blue */
 
     -fx-background-radius: 6px;
     -fx-border-color: #66aaaa;
@@ -40,9 +40,13 @@
     -fx-text-fill: #1A1B1F;
 }
 
+.game-view {
+    -fx-spacing: 20;
+}
+
 .troops-view {
     -fx-spacing: 20px;
-    -fx-background: #ff0000;
+    -fx-background: #ff0000; /* red */
     -fx-alignment: center;
 }
 
@@ -71,6 +75,15 @@
 }
 
 .selected {
-    -fx-border-color: #000000;
+    -fx-border-color: #000000; /* black */
     -fx-border-width: 3px;
+}
+
+.stack-highlighted {
+    -fx-border-color: #800080; /* purple */
+    -fx-border-width: 6px;
+}
+
+.state-view {
+    -fx-padding: 10px;
 }

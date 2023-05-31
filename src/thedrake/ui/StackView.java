@@ -6,7 +6,9 @@ import javafx.scene.layout.StackPane;
 import thedrake.PlayingSide;
 import thedrake.Troop;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StackView extends HBox {
     private static final String side = "front";
@@ -30,10 +32,21 @@ public class StackView extends HBox {
             TroopView troopView = new TroopView(side + troop.name() + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png");
             troopView.setOnMouseClicked(e -> {
                 EventBus.fireEvent("unset-all-selected", null);
-                troopView.setBorder(true);
+                if (troop == stack.get(0)) {
+                    troopView.setBorder(true);
+                    EventBus.fireEvent("show-possible-moves", new HashMap<>(
+                            Map.of("side", PlayingSide.BLUE)));
+                }
             });
             this.getChildren().add(troopView);
         }
+    }
+
+    public void setHighlighted(boolean isHighlighted) {
+        if (isHighlighted)
+            this.getStyleClass().add("stack-highlighted");
+        else
+            this.getStyleClass().remove("stack-highlighted");
     }
 
     static class TroopView extends StackPane {
