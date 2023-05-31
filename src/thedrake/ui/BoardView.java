@@ -26,6 +26,11 @@ public class BoardView extends GridPane {
 
     public BoardView setBoard(GameState gameState) {
         this.getChildren().clear();
+        EventBus.registerHandler("unset-selected-board", e -> {
+            tiles[selected[0]][selected[1]].setBorder(false);
+            selected[0] = 0;
+            selected[1] = 0;
+        });
         for (int i = 0; i < GRID_SIZE; i++)
             for (int j = 0; j < GRID_SIZE; j++) {
                 TileView tileView = new TileView();
@@ -35,7 +40,9 @@ public class BoardView extends GridPane {
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
-                    tiles[selected[0]][selected[1]].setBorder(false);
+                    EventBus.fireEvent("unset-selected-board", null);
+                    EventBus.fireEvent("unset-selected-stack-1", null);
+                    EventBus.fireEvent("unset-selected-stack-2", null);
                     tiles[finalI][finalJ].setBorder(true);
                     selected[0] = finalI;
                     selected[1] = finalJ;
@@ -64,9 +71,9 @@ public class BoardView extends GridPane {
 
         public void setBorder(boolean isBorder) {
             if (isBorder)
-                this.getStyleClass().add("image-border");
+                this.getStyleClass().add("selected");
             else
-                this.getStyleClass().remove("image-border");
+                this.getStyleClass().remove("selected");
         }
 
         public TileView() {
@@ -76,7 +83,7 @@ public class BoardView extends GridPane {
         private ImageView createImageView(String name) {
             ImageView imageView = new ImageView(getClass().getResource("/images/" + name).toExternalForm());
 
-            imageView.getStyleClass().add("board-tile-image");
+            imageView.getStyleClass().add("tile-image");
             return imageView;
         }
     }
