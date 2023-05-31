@@ -3,7 +3,6 @@ package thedrake.ui;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import thedrake.BoardPos;
 import thedrake.BoardTile;
 import thedrake.GameState;
 import thedrake.PositionFactory;
@@ -12,6 +11,10 @@ public class BoardView extends GridPane {
     public static final int GRID_SIZE = 4;
 
     PositionFactory pf;
+
+    TileView[][] tiles = new TileView[GRID_SIZE][GRID_SIZE];
+
+    int[] selected = {0, 0};
 
     public BoardView() {
         this.getStyleClass().add("game-board");
@@ -25,12 +28,19 @@ public class BoardView extends GridPane {
         this.getChildren().clear();
         for (int i = 0; i < GRID_SIZE; i++)
             for (int j = 0; j < GRID_SIZE; j++) {
-                // mountain?
-                if (gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN) {
-                    this.add(new TileView("mountain.png"), i, j);
-                } else {
-                    this.add(new TileView("move.png"), i, j);
-                }
+                TileView tileView = new TileView();
+                tiles[i][j] = tileView;
+                tileView.setImage(gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN
+                        ? "mountain.png" : "move.png");
+                int finalI = i;
+                int finalJ = j;
+                tileView.setOnMouseClicked(e -> {
+                    tiles[selected[0]][selected[1]].setBorder(false);
+                    tiles[finalI][finalJ].setBorder(true);
+                    selected[0] = finalI;
+                    selected[1] = finalJ;
+                });
+                this.add(tileView, i, j);
             }
         return this;
     }
@@ -44,6 +54,19 @@ public class BoardView extends GridPane {
                 return;
             imageView = createImageView(name);
             this.getChildren().add(imageView);
+        }
+
+        public void setImage(String name) {
+            this.getChildren().clear();
+            imageView = createImageView(name);
+            this.getChildren().add(imageView);
+        }
+
+        public void setBorder(boolean isBorder) {
+            if (isBorder)
+                this.getStyleClass().add("image-border");
+            else
+                this.getStyleClass().remove("image-border");
         }
 
         public TileView() {

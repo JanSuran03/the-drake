@@ -40,7 +40,7 @@
     -fx-text-fill: #1A1B1F;
 }
 
-.game-view {
+.troops-view {
     -fx-spacing: 20px;
     -fx-background: #ff0000;
     -fx-alignment: center;
@@ -68,4 +68,9 @@
 .stack {
     -fx-spacing: 8px;
     -fx-alignment: center;
+}
+
+.image-border {
+    -fx-border-color: #000000;
+    -fx-border-width: 3px;
 }
