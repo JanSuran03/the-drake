@@ -26,6 +26,11 @@ public class Main extends Application {
                 gameView.startGame();
                 scene.setRoot(new AppView().setRoot(gameView));
             });
+            scene.setOnKeyPressed(e -> {
+                if (gameView.started && e.getCode().toString().equals("ESCAPE")) {
+                    EventBus.fireEvent("unset-all-selected", null);
+                }
+            });
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load FXML file: " + e.getMessage(), e);

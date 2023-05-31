@@ -11,6 +11,8 @@ public class GameView extends HBox {
     TroopFieldsView troopFieldsView;
     StateView stateView;
 
+    public boolean started = false;
+
     private BoardView boardView() {
         return troopFieldsView.boardView;
     }
@@ -59,11 +61,18 @@ public class GameView extends HBox {
                         BoardPos pos = pf.pos(i, j);
                         if (gameState.canPlaceFromStack(pos)) {
                             boardView().tiles[i][j].setCanMoveOn(true);
-                            System.out.println("Can place from stack: " + pos);
                         }
                     }
             }
         });
+        // on pressing escape, fire "unset-all-selected" event
+        this.setOnKeyPressed(e -> {
+            System.out.println(e.getCode().toString());
+            if (e.getCode().toString().equals("ESCAPE")) {
+                EventBus.fireEvent("unset-all-selected", null);
+            }
+        });
+        started = true;
     }
 
     static class TroopFieldsView extends VBox {
