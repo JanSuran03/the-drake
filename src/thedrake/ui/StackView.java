@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class StackView extends HBox {
-    private static final String side = "front";
+    public static final String SIDE = "front";
+
+    public static String frontTroopImageName(Troop troop, PlayingSide side) {
+        return SIDE + troop.name() + (side == PlayingSide.BLUE ? 'B' : 'O') + ".png";
+    }
     List<Troop> stack;
 
     PlayingSide playingSide;
@@ -29,12 +33,14 @@ public class StackView extends HBox {
             }
         });
         for (var troop : stack) {
-            TroopView troopView = new TroopView(side + troop.name() + (playingSide == PlayingSide.BLUE ? 'B' : 'O') + ".png");
+            TroopView troopView = new TroopView(frontTroopImageName(troop, playingSide));
             troopView.setOnMouseClicked(e -> {
                 EventBus.fireEvent("unset-all-selected", null);
                 if (troop == stack.get(0)) {
-                    if (playingSide == ((GameView) Util.getParentOfClass(this, GameView.class)).gameState.sideOnTurn()) {
+                    GameView gameView = (GameView) Util.getParentOfClass(this, GameView.class);
+                    if (playingSide == gameView.gameState.sideOnTurn()) {
                         troopView.setBorder(true);
+                        EventBus.fireEvent("set-selected-stack-flag", new HashMap<>(Map.of("selected", true)));
                         EventBus.fireEvent("show-possible-moves", new HashMap<>(
                                 Map.of("side", PlayingSide.BLUE)));
                     }

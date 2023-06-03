@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import thedrake.BoardTile;
 import thedrake.GameState;
 import thedrake.PositionFactory;
+import thedrake.Troop;
 
 public class BoardView extends GridPane {
     public static final int GRID_SIZE = 4;
@@ -15,6 +16,8 @@ public class BoardView extends GridPane {
     TileView[][] tiles = new TileView[GRID_SIZE][GRID_SIZE];
 
     int[] selected = {0, 0};
+
+    private boolean selectedStack = false;
 
     public BoardView() {
         this.getStyleClass().add("game-board");
@@ -43,13 +46,26 @@ public class BoardView extends GridPane {
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
-                    EventBus.fireEvent("unset-all-selected", null);
-                    tiles[finalI][finalJ].setBorder(true);
-                    selected[0] = finalI;
-                    selected[1] = finalJ;
+                    System.out.println("Can move on? " + tiles[finalI][finalJ].canMoveOn);
+                    if (tiles[finalI][finalJ].canMoveOn) {
+                        if (selectedStack) {
+                            Troop troop = gameState.armyOnTurn().stack().get(0);
+                            gameState.placeFromStack(pf.pos(finalI, finalJ));
+                            tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, gameState.sideOnTurn()));
+                            System.out.println("Placed troop: " + troop.name());
+                        }
+                    } else {
+                        EventBus.fireEvent("unset-all-selected", null);
+                        tiles[finalI][finalJ].setBorder(true);
+                        selected[0] = finalI;
+                        selected[1] = finalJ;
+                    }
                 });
                 this.add(tileView, i, j);
             }
+        EventBus.registerHandler("set-selected-stack-flag", ev_data -> {
+            selectedStack = (boolean) ev_data.get("selected");
+        });
 
         return this;
     }
@@ -93,11 +109,11 @@ public class BoardView extends GridPane {
                     createMoveImageView();
                 if (!this.getChildren().contains(moveImageView))
                     this.getChildren().add(moveImageView);
-                canMoveOn = true;
+                this.canMoveOn = true;
             } else {
                 if (moveImageView != null)
                     this.getChildren().remove(moveImageView);
-                canMoveOn = false;
+                this.canMoveOn = false;
             }
         }
 

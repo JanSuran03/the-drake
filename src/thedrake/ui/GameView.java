@@ -5,6 +5,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameView extends HBox {
 
     GameState gameState;
@@ -52,6 +55,7 @@ public class GameView extends HBox {
             EventBus.fireEvent("unset-selected-board", null);
             EventBus.fireEvent("unset-selected-stack-1", null);
             EventBus.fireEvent("unset-selected-stack-2", null);
+            EventBus.fireEvent("set-selected-stack-flag", new HashMap<>(Map.of("selected", false)));
         });
 
         EventBus.registerHandler("show-possible-moves", ev_data -> {

@@ -20,6 +20,12 @@ public class EventBus {
     public static void fireEvent(String eventID, HashMap<String, Object> event) {
         if (handlers.containsKey(eventID)) {
             handlers.get(eventID).handleEvent(event);
+        } else {
+            System.err.println("No handler for event " + eventID);
         }
+    }
+
+    public static void reset() {
+        handlers.clear();
     }
 }
