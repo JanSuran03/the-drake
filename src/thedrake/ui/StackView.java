@@ -33,9 +33,11 @@ public class StackView extends HBox {
             troopView.setOnMouseClicked(e -> {
                 EventBus.fireEvent("unset-all-selected", null);
                 if (troop == stack.get(0)) {
-                    troopView.setBorder(true);
-                    EventBus.fireEvent("show-possible-moves", new HashMap<>(
-                            Map.of("side", PlayingSide.BLUE)));
+                    if (playingSide == ((GameView) Util.getParentOfClass(this, GameView.class)).gameState.sideOnTurn()) {
+                        troopView.setBorder(true);
+                        EventBus.fireEvent("show-possible-moves", new HashMap<>(
+                                Map.of("side", PlayingSide.BLUE)));
+                    }
                 }
             });
             this.getChildren().add(troopView);
