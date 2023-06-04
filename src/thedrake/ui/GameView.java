@@ -6,9 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GameView extends AnchorPane {
@@ -46,6 +44,7 @@ public class GameView extends AnchorPane {
         int dimension = 4;
         Board board = new Board(dimension);
         PositionFactory pf = board.positionFactory();
+        EventBus.registerGetter("pf", e -> pf);
         // generate for each row from 2 to dimension - 1, pick a random letter from a
         // to dimension - 1 and generate a mountain there
         for (int i = 2; i < dimension; i++) {
@@ -157,10 +156,17 @@ public class GameView extends AnchorPane {
             EventBus.registerHandler("end-game-if-over", e ->
             {
                 GameState currentState = (GameState) EventBus.get("gameState", null);
-                if (currentState.result() == GameResult.VICTORY) {
-                    setState(currentState.sideOnTurn() == PlayingSide.BLUE ? State.ORANGE_VICTORY : State.BLUE_VICTORY);
-                    EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", true)));
+                if (currentState.result() != GameResult.VICTORY) {
+                    // can place from stack somewhere
+                    for (int i = 0; i < currentState.board().dimension(); i++)
+                        for (int j = 0; j < currentState.board().dimension(); j++) {
+                            BoardPos pos = ((PositionFactory) EventBus.get("pf", null)).pos(i, j);
+                            if (currentState.canPlaceFromStack(pos) || currentState.tileAt(pos).movesFrom(pos, currentState).size() > 0)
+                                return;
+                        }
                 }
+                setState(currentState.sideOnTurn() == PlayingSide.BLUE ? State.ORANGE_VICTORY : State.BLUE_VICTORY);
+                EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", true)));
             });
         }
 
