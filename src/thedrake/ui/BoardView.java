@@ -46,7 +46,7 @@ public class BoardView extends GridPane {
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
-                    if (tiles[finalI][finalJ].canMoveOn) {
+                    if (tiles[finalI][finalJ].canMoveOn) { // execute move
                         GameState currentState = (GameState) EventBus.get("gameState", null);
                         PlayingSide side = currentState.sideOnTurn();
                         if (selectedStack) {
@@ -56,12 +56,11 @@ public class BoardView extends GridPane {
                             tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, side));
                             EventBus.fireEvent("set-stack", new HashMap<>(Map.of("side", side)));
                         } else { // can move, but not from stack -> the only other option is from another tile
-                            GameState newGameState;
                             BoardPos origin = pf.pos(selected[0], selected[1]);
                             BoardPos target = pf.pos(finalI, finalJ);
                             for (Move move : currentState.tileAt(origin).movesFrom(origin, currentState)) {
                                 if (move.target().equals(target)) {
-                                    newGameState = move.execute(currentState);
+                                    GameState newGameState = move.execute(currentState);
                                     EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
                                     tiles[finalI][finalJ].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
                                     tiles[selected[0]][selected[1]].removeImage();
@@ -70,7 +69,7 @@ public class BoardView extends GridPane {
                             }
                         }
                         EventBus.fireEvent("unset-all-selected", null);
-                    } else {
+                    } else { // select tile, don't execute move
                         EventBus.fireEvent("unset-all-selected", null);
                         tiles[finalI][finalJ].setBorder(true);
                         selected[0] = finalI;
