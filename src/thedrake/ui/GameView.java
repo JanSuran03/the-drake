@@ -146,6 +146,13 @@ public class GameView extends AnchorPane {
             stateLabel.setText(state.toString());
             this.getChildren().add(stateLabel);
             this.getStyleClass().add("state-view");
+            EventBus.registerHandler("end-game-if-over", e ->
+            {
+                GameState currentState = (GameState) EventBus.get("gameState", null);
+                if (currentState.result() == GameResult.VICTORY) {
+                    setState(currentState.sideOnTurn() == PlayingSide.BLUE ? State.ORANGE_VICTORY : State.BLUE_VICTORY);
+                }
+            });
         }
 
         public void setState(State state) {
