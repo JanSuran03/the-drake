@@ -61,13 +61,21 @@ public class GameView extends AnchorPane {
 
         EventBus.registerHandler("show-possible-moves", ev_data -> {
             if (ev_data.get("side") == this.gameState.sideOnTurn()) {
-                for (int i = 0; i < this.gameState.board().dimension(); i++)
-                    for (int j = 0; j < this.gameState.board().dimension(); j++) {
-                        BoardPos pos = pf.pos(i, j);
-                        if (this.gameState.canPlaceFromStack(pos)) {
-                            boardView().tiles[i][j].setCanMoveOn(true);
+                if (ev_data.get("pos") == "stack") {
+                    for (int i = 0; i < this.gameState.board().dimension(); i++) {
+                        for (int j = 0; j < this.gameState.board().dimension(); j++) {
+                            BoardPos pos = pf.pos(i, j);
+                            if (this.gameState.canPlaceFromStack(pos)) {
+                                boardView().tiles[i][j].setCanMoveOn(true);
+                            }
                         }
                     }
+                } else {
+                    BoardPos pos = pf.pos((String) ev_data.get("pos"));
+                    for (Move move : this.gameState.tileAt(pos).movesFrom(pos, this.gameState)) {
+                        boardView().tiles[move.target().i()][move.target().j()].setCanMoveOn(true);
+                    }
+                }
             }
         });
         EventBus.registerHandler("set-stack", ev_data -> {
@@ -128,6 +136,7 @@ public class GameView extends AnchorPane {
                 label.setText(text);
             }
         }
+
         public StateLabelView stateLabel;
         public State state;
 

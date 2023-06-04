@@ -62,6 +62,9 @@ public class BoardView extends GridPane {
                         tiles[finalI][finalJ].setBorder(true);
                         selected[0] = finalI;
                         selected[1] = finalJ;
+                        EventBus.fireEvent("show-possible-moves",
+                                new HashMap<>(Map.of("side",((GameState) EventBus.get("gameState", null)).sideOnTurn(),
+                                        "pos", pf.pos(finalI, finalJ).toString())));
                     }
                 });
                 this.add(tileView, i, j);

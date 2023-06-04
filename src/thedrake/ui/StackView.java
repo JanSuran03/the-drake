@@ -43,7 +43,7 @@ public class StackView extends HBox {
                         troopView.setBorder(true);
                         EventBus.fireEvent("set-selected-stack-flag", new HashMap<>(Map.of("selected", true)));
                         EventBus.fireEvent("show-possible-moves", new HashMap<>(
-                                Map.of("side", playingSide)));
+                                Map.of("side", playingSide, "pos", "stack")));
                     }
                 }
             });
