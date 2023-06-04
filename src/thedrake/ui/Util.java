@@ -10,4 +10,20 @@ public class Util {
             return node;
         return getParentOfClass(node.getParent(), parentClass);
     }
+
+    /**
+     * replaces *B.png with *O.png and vice versa
+     */
+    static String flippedImageName(String imageName) {
+        return imageName.startsWith("front")
+                ? imageName.replace("front", "back")
+                : imageName.replace("back", "front");
+    }
+
+    /**
+     * .../the-drake/target/classes/images/frontClubmanB.png -> frontClubmanB
+     */
+    static String extractImageName(String imagePath) {
+        return imagePath.substring(imagePath.lastIndexOf('/') + 1);
+    }
 }

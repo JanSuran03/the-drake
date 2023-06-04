@@ -55,7 +55,6 @@ public class BoardView extends GridPane {
                             EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
                             tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, side));
                             EventBus.fireEvent("set-stack", new HashMap<>(Map.of("side", side)));
-                            EventBus.fireEvent("unset-all-selected", null);
                         } else { // can move, but not from stack -> the only other option is from another tile
                             GameState newGameState;
                             BoardPos origin = pf.pos(selected[0], selected[1]);
@@ -64,10 +63,13 @@ public class BoardView extends GridPane {
                                 if (move.target().equals(target)) {
                                     newGameState = move.execute(currentState);
                                     EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
+                                    tiles[finalI][finalJ].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
+                                    tiles[selected[0]][selected[1]].removeImage();
                                     break;
                                 }
                             }
                         }
+                        EventBus.fireEvent("unset-all-selected", null);
                     } else {
                         EventBus.fireEvent("unset-all-selected", null);
                         tiles[finalI][finalJ].setBorder(true);
@@ -111,6 +113,10 @@ public class BoardView extends GridPane {
             this.getChildren().clear();
             imageView = createImageView(name);
             this.getChildren().add(imageView);
+        }
+
+        public void removeImage() {
+            this.getChildren().clear();
         }
 
         public void setBorder(boolean isBorder) {
