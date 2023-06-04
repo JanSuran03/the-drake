@@ -12,30 +12,30 @@ import java.util.Map;
 public class GameView extends AnchorPane {
 
     GameState gameState;
-    TroopFieldsView troopFieldsView;
+    TroopFieldsViewWrapper troopFieldsViewWrapper;
     StateView stateView;
 
     public boolean started = false;
 
     private BoardView boardView() {
-        return troopFieldsView.boardView;
+        return troopFieldsViewWrapper.troopFieldsView().boardView;
     }
 
     private StackView blueStack() {
-        return troopFieldsView.blueStack;
+        return troopFieldsViewWrapper.troopFieldsView().blueStack;
     }
 
     private StackView orangeStack() {
-        return troopFieldsView.orangeStack;
+        return troopFieldsViewWrapper.troopFieldsView().orangeStack;
     }
 
     public GameView() {
-        TroopFieldsView troopFieldsView = new TroopFieldsView();
-        AnchorPane.setLeftAnchor(troopFieldsView, 0.0);
+        TroopFieldsViewWrapper troopFieldsViewWrapper = new TroopFieldsViewWrapper();
+        AnchorPane.setLeftAnchor(troopFieldsViewWrapper, 0.0);
         this.stateView = new StateView();
         AnchorPane.setRightAnchor(stateView, 0.0);
-        this.troopFieldsView = troopFieldsView;
-        this.getChildren().add(troopFieldsView);
+        this.troopFieldsViewWrapper = troopFieldsViewWrapper;
+        this.getChildren().add(troopFieldsViewWrapper);
         this.getChildren().add(stateView);
         this.getStyleClass().add("game-view");
     }
@@ -48,7 +48,7 @@ public class GameView extends AnchorPane {
         this.gameState = new StandardDrakeSetup().startState(board);
         this.boardView().setPf(pf);
         this.boardView().setBoard(gameState);
-        this.troopFieldsView.pf = pf;
+        this.troopFieldsViewWrapper.troopFieldsView().pf = pf;
         this.blueStack().setStack(this.gameState.army(PlayingSide.BLUE).stack());
         this.orangeStack().setStack(this.gameState.army(PlayingSide.ORANGE).stack());
         this.blueStack().setHighlighted(true);
@@ -151,6 +151,7 @@ public class GameView extends AnchorPane {
                 GameState currentState = (GameState) EventBus.get("gameState", null);
                 if (currentState.result() == GameResult.VICTORY) {
                     setState(currentState.sideOnTurn() == PlayingSide.BLUE ? State.ORANGE_VICTORY : State.BLUE_VICTORY);
+                    EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", true)));
                 }
             });
         }

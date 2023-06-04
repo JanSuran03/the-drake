@@ -73,6 +73,8 @@
 .stack {
     -fx-padding: 10px;
     -fx-spacing: 8px;
+    -fx-pref-height: 108px;
+    -fx-pref-width: 770px;
     /*-fx-alignment: center;
 */}
 
@@ -100,4 +102,10 @@
     -fx-padding: 10px;
     -fx-background-color: #00ffff; /* aqua */
     -fx-alignment: center;
+}
+
+.game-over-overlay {
+    -fx-font-size: 11em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A1B1F;
 }
