@@ -10,7 +10,7 @@
     -fx-spacing: 10;
 }
 
-.menu-buttons > .button {
+.button {
     -fx-font-size: 1.5em;
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
@@ -23,7 +23,7 @@
 }
 
 /* hover: set background color to 88cccc */
-.menu-buttons > .button:hover {
+.button:hover {
     -fx-background-color: #88cccc;
 }
 
@@ -82,9 +82,11 @@
     -fx-border-width: 3px;
 }
 
-
 .state-view {
     -fx-padding: 10px;
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+    -fx-pref-width: 260px;
 }
 
 .state-label {
@@ -95,7 +97,7 @@
 
 .label-pane {
     -fx-padding: 10px;
-    -fx-background-color: #00ffff; /* aqua */
+    -fx-background-color: #a6ff00; /* lime/yellow */
     -fx-alignment: center;
 }
 

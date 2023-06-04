@@ -19,7 +19,7 @@ public class Main extends Application {
             Parent menu = new FXMLLoader().load(getClass().getResource("/fxml/menu.fxml"));
             GameView gameView = new GameView();
             AppView appView = new AppView();
-            Scene scene = new Scene(appView.setRoot(menu), 1000, 800);
+            Scene scene = new Scene(appView.setRoot(menu), 1050, 800);
             scene.getStylesheets().add(getClass().getResource("/css/the-drake.css").toExternalForm());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());
