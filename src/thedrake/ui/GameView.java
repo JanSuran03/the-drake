@@ -6,7 +6,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameView extends AnchorPane {
@@ -41,10 +43,16 @@ public class GameView extends AnchorPane {
     }
 
     public void startGame() {
-        Board board = new Board(4);
+        int dimension = 4;
+        Board board = new Board(dimension);
         PositionFactory pf = board.positionFactory();
-        board = board.withTiles(new Board.TileAt(pf.pos("b2"), BoardTile.MOUNTAIN),
-                new Board.TileAt(pf.pos("c3"), BoardTile.MOUNTAIN));
+        // generate for each row from 2 to dimension - 1, pick a random letter from a
+        // to dimension - 1 and generate a mountain there
+        for (int i = 2; i < dimension; i++) {
+            board = board.withTiles(new Board.TileAt(pf.pos(
+                    String.valueOf((char) ('a' + (int) (Math.random() * dimension))) + i),
+                    BoardTile.MOUNTAIN));
+        }
         this.gameState = new StandardDrakeSetup().startState(board);
         this.boardView().setPf(pf);
         this.boardView().setBoard(gameState);
