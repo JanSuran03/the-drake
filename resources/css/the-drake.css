@@ -54,6 +54,7 @@
     -fx-vgap: 8px;
     -fx-hgap: 8px;
     -fx-alignment: center;
+    -fx-padding: 12px;
 }
 
 .board-tile {
@@ -70,19 +71,20 @@
 }
 
 .stack {
+    -fx-padding: 10px;
     -fx-spacing: 8px;
-    -fx-alignment: center;
-}
+    /*-fx-alignment: center;
+*/}
 
 .selected {
     -fx-border-color: #000000; /* black */
     -fx-border-width: 3px;
 }
 
-.stack-highlighted {
-    -fx-border-color: #800080; /* purple */
+/*.stack-highlighted {
+    -fx-border-color: #800080; *//* purple *//*
     -fx-border-width: 6px;
-}
+}*/
 
 .state-view {
     -fx-padding: 10px;
