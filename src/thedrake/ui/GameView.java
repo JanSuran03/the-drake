@@ -116,9 +116,9 @@ public class GameView extends AnchorPane {
             this.orangeStack = orangeStack;
             this.boardView = boardView;
             this.getStyleClass().add("troops-view");
-            this.getChildren().add(blueStack);
-            this.getChildren().add(boardView);
             this.getChildren().add(orangeStack);
+            this.getChildren().add(boardView);
+            this.getChildren().add(blueStack);
         }
     }
 

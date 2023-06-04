@@ -47,15 +47,16 @@ public class BoardView extends GridPane {
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
                     if (tiles[finalI][finalJ].canMoveOn) {
+                        GameState currentState = (GameState) EventBus.get("gameState", null);
+                        PlayingSide side = currentState.sideOnTurn();
                         if (selectedStack) {
-                            GameState currentState = (GameState) EventBus.get("gameState", null);
-                            PlayingSide side = currentState.sideOnTurn();
                             Troop troop = currentState.armyOnTurn().stack().get(0);
                             GameState newGameState = currentState.placeFromStack(pf.pos(finalI, finalJ));
                             EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
                             tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, side));
                             EventBus.fireEvent("set-stack", new HashMap<>(Map.of("side", side)));
                             EventBus.fireEvent("unset-all-selected", null);
+                        } else { // can move, but not from stack -> the only other option is from another tile
                         }
                     } else {
                         EventBus.fireEvent("unset-all-selected", null);
@@ -63,11 +64,11 @@ public class BoardView extends GridPane {
                         selected[0] = finalI;
                         selected[1] = finalJ;
                         EventBus.fireEvent("show-possible-moves",
-                                new HashMap<>(Map.of("side",((GameState) EventBus.get("gameState", null)).sideOnTurn(),
+                                new HashMap<>(Map.of("side", ((GameState) EventBus.get("gameState", null)).sideOnTurn(),
                                         "pos", pf.pos(finalI, finalJ).toString())));
                     }
                 });
-                this.add(tileView, i, j);
+                this.add(tileView, GRID_SIZE - 1 - i, GRID_SIZE - 1 - j);
             }
         EventBus.registerHandler("set-selected-stack-flag", ev_data -> {
             selectedStack = (boolean) ev_data.get("selected");
