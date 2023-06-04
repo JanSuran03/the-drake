@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import thedrake.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameView extends AnchorPane implements Resettable {
@@ -158,9 +159,14 @@ public class GameView extends AnchorPane implements Resettable {
         public Button goToMainMenuButton;
         public Button restartGameButton;
 
+        public CapturedArmyView capturedBlueArmy;
+        public CapturedArmyView capturedOrangeArmy;
+
         @Override
         public void reset() {
             this.setState(State.BLUE_ON_TURN);
+            this.capturedBlueArmy.reset();
+            this.capturedOrangeArmy.reset();
             EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", false)));
         }
 
@@ -193,6 +199,19 @@ public class GameView extends AnchorPane implements Resettable {
             this.restartGameButton.setOnMouseClicked(e -> EventBus.fireEvent("restart-game", null));
 
             this.getChildren().addAll(goToMainMenuButton, restartGameButton);
+
+            this.capturedBlueArmy = new CapturedArmyView(PlayingSide.BLUE);
+            this.capturedOrangeArmy = new CapturedArmyView(PlayingSide.ORANGE);
+            this.getChildren().addAll(capturedBlueArmy, capturedOrangeArmy);
+
+            EventBus.registerHandler("setCapturedArmy", ev_data -> {
+                PlayingSide side = (PlayingSide) ev_data.get("side");
+                List<Troop> capturedArmy = ((GameState)(EventBus.get("gameState", null))).army(side).captured();
+                if (side == PlayingSide.BLUE)
+                    this.capturedBlueArmy.update(capturedArmy);
+                else
+                    this.capturedOrangeArmy.update(capturedArmy);
+            });
         }
 
         public void setState(State state) {

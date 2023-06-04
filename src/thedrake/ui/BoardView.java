@@ -75,6 +75,9 @@ public class BoardView extends GridPane implements Resettable {
                                     EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
                                     tiles[finalI][finalJ].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
                                     tiles[selected[0]][selected[1]].removeImage();
+                                    if (move instanceof StepAndCapture || move instanceof CaptureOnly) {
+                                        EventBus.fireEvent("setCapturedArmy", new HashMap<>(Map.of("side", side)));
+                                    }
                                     break;
                                 }
                             }

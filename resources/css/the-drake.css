@@ -106,3 +106,12 @@
     -fx-font-weight: bold;
     -fx-text-fill: #1A1B1F;
 }
+
+.captured-army-view-label {
+    -fx-text-fill: #1A1B1F;
+    -fx-font-size: 1.2em;
+}
+
+.bold {
+    -fx-font-weight: bold;
+}
