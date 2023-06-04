@@ -16,6 +16,7 @@ public class StackView extends HBox {
     public static String frontTroopImageName(Troop troop, PlayingSide side) {
         return SIDE + troop.name() + (side == PlayingSide.BLUE ? 'B' : 'O') + ".png";
     }
+
     List<Troop> stack;
 
     PlayingSide playingSide;
@@ -42,7 +43,7 @@ public class StackView extends HBox {
                         troopView.setBorder(true);
                         EventBus.fireEvent("set-selected-stack-flag", new HashMap<>(Map.of("selected", true)));
                         EventBus.fireEvent("show-possible-moves", new HashMap<>(
-                                Map.of("side", PlayingSide.BLUE)));
+                                Map.of("side", playingSide)));
                     }
                 }
             });

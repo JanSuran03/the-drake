@@ -3,10 +3,10 @@ package thedrake.ui;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import thedrake.BoardTile;
-import thedrake.GameState;
-import thedrake.PositionFactory;
-import thedrake.Troop;
+import thedrake.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoardView extends GridPane {
     public static final int GRID_SIZE = 4;
@@ -27,7 +27,7 @@ public class BoardView extends GridPane {
         this.pf = pf;
     }
 
-    public BoardView setBoard(GameState gameState) {
+    public BoardView setBoard(GameState initialGameState) {
         this.getChildren().clear();
         EventBus.registerHandler("unset-selected-board", e -> {
             tiles[selected[0]][selected[1]].setBorder(false);
@@ -41,18 +41,21 @@ public class BoardView extends GridPane {
             for (int j = 0; j < GRID_SIZE; j++) {
                 TileView tileView = new TileView();
                 tiles[i][j] = tileView;
-                if (gameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN)
+                if (initialGameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN)
                     tileView.setImage("mountain.png");
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(e -> {
-                    System.out.println("Can move on? " + tiles[finalI][finalJ].canMoveOn);
                     if (tiles[finalI][finalJ].canMoveOn) {
                         if (selectedStack) {
-                            Troop troop = gameState.armyOnTurn().stack().get(0);
-                            gameState.placeFromStack(pf.pos(finalI, finalJ));
-                            tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, gameState.sideOnTurn()));
-                            System.out.println("Placed troop: " + troop.name());
+                            GameState currentState = (GameState) EventBus.get("gameState", null);
+                            PlayingSide side = currentState.sideOnTurn();
+                            Troop troop = currentState.armyOnTurn().stack().get(0);
+                            GameState newGameState = currentState.placeFromStack(pf.pos(finalI, finalJ));
+                            EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
+                            tiles[finalI][finalJ].setImage(StackView.frontTroopImageName(troop, side));
+                            EventBus.fireEvent("set-stack", new HashMap<>(Map.of("side", side)));
+                            EventBus.fireEvent("unset-all-selected", null);
                         }
                     } else {
                         EventBus.fireEvent("unset-all-selected", null);

@@ -42,13 +42,12 @@ public class GameView extends HBox {
         PositionFactory pf = board.positionFactory();
         board = board.withTiles(new Board.TileAt(pf.pos("b2"), BoardTile.MOUNTAIN),
                 new Board.TileAt(pf.pos("c3"), BoardTile.MOUNTAIN));
-        GameState gameState = new StandardDrakeSetup().startState(board);
+        this.gameState = new StandardDrakeSetup().startState(board);
         this.boardView().setPf(pf);
         this.boardView().setBoard(gameState);
-        this.gameState = gameState;
         this.troopFieldsView.pf = pf;
-        this.blueStack().setStack(gameState.army(PlayingSide.BLUE).stack());
-        this.orangeStack().setStack(gameState.army(PlayingSide.ORANGE).stack());
+        this.blueStack().setStack(this.gameState.army(PlayingSide.BLUE).stack());
+        this.orangeStack().setStack(this.gameState.army(PlayingSide.ORANGE).stack());
         this.blueStack().setHighlighted(true);
         this.stateView = new StateView();
         EventBus.registerHandler("unset-all-selected", e -> {
@@ -59,16 +58,27 @@ public class GameView extends HBox {
         });
 
         EventBus.registerHandler("show-possible-moves", ev_data -> {
-            if (ev_data.get("side") == gameState.sideOnTurn()) {
-                for (int i = 0; i < gameState.board().dimension(); i++)
-                    for (int j = 0; j < gameState.board().dimension(); j++) {
+            if (ev_data.get("side") == this.gameState.sideOnTurn()) {
+                for (int i = 0; i < this.gameState.board().dimension(); i++)
+                    for (int j = 0; j < this.gameState.board().dimension(); j++) {
                         BoardPos pos = pf.pos(i, j);
-                        if (gameState.canPlaceFromStack(pos)) {
+                        if (this.gameState.canPlaceFromStack(pos)) {
                             boardView().tiles[i][j].setCanMoveOn(true);
                         }
                     }
             }
         });
+        EventBus.registerHandler("set-stack", ev_data -> {
+            PlayingSide side = (PlayingSide) ev_data.get("side");
+            if (side == PlayingSide.BLUE)
+                blueStack().setStack(this.gameState.army(side).stack());
+            else
+                orangeStack().setStack(this.gameState.army(side).stack());
+        });
+        EventBus.registerHandler("set-game-state", ev_data -> {
+            this.gameState = (GameState) ev_data.get("gameState");
+        });
+        EventBus.registerGetter("gameState", ev_data -> this.gameState);
         // on pressing escape, fire "unset-all-selected" event
         this.setOnKeyPressed(e -> {
             System.out.println(e.getCode().toString());
