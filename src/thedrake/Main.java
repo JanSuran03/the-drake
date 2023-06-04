@@ -33,6 +33,11 @@ public class Main extends Application {
                 appView.setRoot(menu);
             });
 
+            EventBus.registerHandler("restart-game", e -> {
+                gameView.reset();
+                gameView.startGame();
+            });
+
             scene.setOnKeyPressed(e -> {
                 if (gameView.started && e.getCode().toString().equals("ESCAPE")) {
                     EventBus.fireEvent("unset-all-selected", null);

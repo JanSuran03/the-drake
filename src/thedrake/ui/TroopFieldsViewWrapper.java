@@ -13,10 +13,8 @@ public class TroopFieldsViewWrapper extends StackPane {
         this.gameOverOverlay.getStyleClass().add("game-over-overlay");
         this.gameOverOverlay.setVisible(false);
         this.getChildren().addAll(this.troopFieldsView, this.gameOverOverlay);
-        EventBus.registerHandler("game-over-overlay", ev_data -> {
-            System.out.println("Setting game over: " + (boolean) ev_data.get("over"));
-            this.gameOverOverlay.setVisible((boolean) ev_data.get("over"));
-        });
+        EventBus.registerHandler("game-over-overlay", ev_data -> this.gameOverOverlay.setVisible((boolean) ev_data.get("over")))
+        ;
     }
 
     public GameView.TroopFieldsView troopFieldsView() {
