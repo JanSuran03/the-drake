@@ -10,7 +10,7 @@ import thedrake.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameView extends AnchorPane {
+public class GameView extends AnchorPane implements Resettable {
 
     GameState gameState;
     TroopFieldsViewWrapper troopFieldsViewWrapper;
@@ -41,6 +41,15 @@ public class GameView extends AnchorPane {
         this.getStyleClass().add("game-view");
     }
 
+    @Override
+    public void reset() {
+        this.started = false;
+        this.blueStack().reset();
+        this.orangeStack().reset();
+        this.boardView().reset();
+        this.stateView.reset();
+    }
+
     public void startGame() {
         int dimension = 4;
         Board board = new Board(dimension);
@@ -59,7 +68,6 @@ public class GameView extends AnchorPane {
         this.troopFieldsViewWrapper.troopFieldsView().pf = pf;
         this.blueStack().setStack(this.gameState.army(PlayingSide.BLUE).stack());
         this.orangeStack().setStack(this.gameState.army(PlayingSide.ORANGE).stack());
-        this.blueStack().setHighlighted(true);
         EventBus.registerHandler("unset-all-selected", e -> {
             EventBus.fireEvent("unset-selected-board", null);
             EventBus.fireEvent("unset-selected-stack-1", null);
@@ -130,7 +138,7 @@ public class GameView extends AnchorPane {
         }
     }
 
-    static class StateView extends VBox {
+    static class StateView extends VBox implements Resettable {
         static class StateLabelView extends StackPane {
             public Label label = new Label();
 
@@ -149,6 +157,12 @@ public class GameView extends AnchorPane {
         public State state;
         public Button goToMainMenuButton;
         public Button restartGameButton;
+
+        @Override
+        public void reset() {
+            this.setState(State.BLUE_ON_TURN);
+            EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", false)));
+        }
 
         public StateView() {
             stateLabel = new StateLabelView();

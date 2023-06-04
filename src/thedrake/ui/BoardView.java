@@ -8,12 +8,12 @@ import thedrake.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoardView extends GridPane {
-    public static final int GRID_SIZE = 4;
+public class BoardView extends GridPane implements Resettable {
+    public int gridSize;
 
     PositionFactory pf;
 
-    TileView[][] tiles = new TileView[GRID_SIZE][GRID_SIZE];
+    TileView[][] tiles;
 
     int[] selected = {0, 0};
 
@@ -27,18 +27,29 @@ public class BoardView extends GridPane {
         this.pf = pf;
     }
 
+    @Override
+    public void reset() {
+        this.getChildren().clear();
+        this.selectedStack = false;
+        this.selected[0] = 0;
+        this.selected[1] = 0;
+        tiles = null;
+    }
+
     public BoardView setBoard(GameState initialGameState) {
         this.getChildren().clear();
+        gridSize = initialGameState.board().dimension();
+        tiles = new TileView[gridSize][gridSize];
         EventBus.registerHandler("unset-selected-board", e -> {
             tiles[selected[0]][selected[1]].setBorder(false);
-            for (int i = 0; i < GRID_SIZE; i++)
-                for (int j = 0; j < GRID_SIZE; j++)
+            for (int i = 0; i < gridSize; i++)
+                for (int j = 0; j < gridSize; j++)
                     tiles[i][j].setCanMoveOn(false);
             selected[0] = 0;
             selected[1] = 0;
         });
-        for (int i = 0; i < GRID_SIZE; i++)
-            for (int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++) {
                 TileView tileView = new TileView();
                 tiles[i][j] = tileView;
                 if (initialGameState.board().at(pf.pos(i, j)) == BoardTile.MOUNTAIN)
@@ -81,7 +92,7 @@ public class BoardView extends GridPane {
                     }
                     EventBus.fireEvent("end-game-if-over", null);
                 });
-                this.add(tileView, GRID_SIZE - 1 - i, GRID_SIZE - 1 - j);
+                this.add(tileView, gridSize - 1 - i, gridSize - 1 - j);
             }
         EventBus.registerHandler("set-selected-stack-flag", ev_data -> {
             selectedStack = (boolean) ev_data.get("selected");
@@ -90,7 +101,7 @@ public class BoardView extends GridPane {
         return this;
     }
 
-    static class TileView extends StackPane {
+    static class TileView extends StackPane implements Resettable {
         ImageView imageView;
 
         ImageView moveImageView;
@@ -150,6 +161,13 @@ public class BoardView extends GridPane {
 
             imageView.getStyleClass().add("tile-image");
             return imageView;
+        }
+
+        @Override
+        public void reset() {
+            this.getChildren().clear();
+            this.canMoveOn = false;
+            this.setBorder(false);
         }
     }
 }

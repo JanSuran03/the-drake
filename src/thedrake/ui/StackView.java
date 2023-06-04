@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StackView extends HBox {
+public class StackView extends HBox implements Resettable {
     public static final String SIDE = "front";
 
     public static String frontTroopImageName(Troop troop, PlayingSide side) {
@@ -23,6 +23,12 @@ public class StackView extends HBox {
 
     public StackView(PlayingSide playingSide) {
         this.playingSide = playingSide;
+    }
+
+    @Override
+    public void reset() {
+        this.getChildren().clear();
+        this.stack = null;
     }
 
     public void setStack(List<Troop> stack) {
@@ -49,13 +55,6 @@ public class StackView extends HBox {
             });
             this.getChildren().add(troopView);
         }
-    }
-
-    public void setHighlighted(boolean isHighlighted) {
-        if (isHighlighted)
-            this.getStyleClass().add("stack-highlighted");
-        else
-            this.getStyleClass().remove("stack-highlighted");
     }
 
     static class TroopView extends StackPane {

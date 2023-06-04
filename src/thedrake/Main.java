@@ -29,6 +29,7 @@ public class Main extends Application {
             });
 
             EventBus.registerHandler("go-to-main-menu", e -> {
+                gameView.reset();
                 appView.setRoot(menu);
             });
 

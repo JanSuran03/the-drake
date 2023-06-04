@@ -75,18 +75,13 @@
     -fx-spacing: 8px;
     -fx-pref-height: 108px;
     -fx-pref-width: 770px;
-    /*-fx-alignment: center;
-*/}
+}
 
 .selected {
     -fx-border-color: #000000; /* black */
     -fx-border-width: 3px;
 }
 
-/*.stack-highlighted {
-    -fx-border-color: #800080; *//* purple *//*
-    -fx-border-width: 6px;
-}*/
 
 .state-view {
     -fx-padding: 10px;
