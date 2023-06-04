@@ -2,7 +2,7 @@ package thedrake.ui.controllers;
 
 import thedrake.ui.EventBus;
 
-public class QuitGameController {
+public class MenuController {
     public void quit() {
         EventBus.fireEvent("quitApplication", null);
     }

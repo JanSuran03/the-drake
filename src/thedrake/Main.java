@@ -18,14 +18,20 @@ public class Main extends Application {
             stage.setTitle("The Drake");
             Parent menu = new FXMLLoader().load(getClass().getResource("/fxml/menu.fxml"));
             GameView gameView = new GameView();
-            Scene scene = new Scene(new AppView().setRoot(menu), 1000, 800);
+            AppView appView = new AppView();
+            Scene scene = new Scene(appView.setRoot(menu), 1000, 800);
             scene.getStylesheets().add(getClass().getResource("/css/the-drake.css").toExternalForm());
             stage.setScene(scene);
             EventBus.registerHandler("quitApplication", e -> stage.close());
             EventBus.registerHandler("startGame", e -> {
                 gameView.startGame();
-                scene.setRoot(new AppView().setRoot(gameView));
+                appView.setRoot(gameView);
             });
+
+            EventBus.registerHandler("go-to-main-menu", e -> {
+                appView.setRoot(menu);
+            });
+
             scene.setOnKeyPressed(e -> {
                 if (gameView.started && e.getCode().toString().equals("ESCAPE")) {
                     EventBus.fireEvent("unset-all-selected", null);

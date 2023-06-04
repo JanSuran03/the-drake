@@ -1,5 +1,6 @@
 package thedrake.ui;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -146,6 +147,8 @@ public class GameView extends AnchorPane {
 
         public StateLabelView stateLabel;
         public State state;
+        public Button goToMainMenuButton;
+        public Button restartGameButton;
 
         public StateView() {
             stateLabel = new StateLabelView();
@@ -168,6 +171,14 @@ public class GameView extends AnchorPane {
                 setState(currentState.sideOnTurn() == PlayingSide.BLUE ? State.ORANGE_VICTORY : State.BLUE_VICTORY);
                 EventBus.fireEvent("game-over-overlay", new HashMap<>(Map.of("over", true)));
             });
+
+            this.goToMainMenuButton = new Button("Go to main menu");
+            this.goToMainMenuButton.setOnMouseClicked(e -> EventBus.fireEvent("go-to-main-menu", null));
+
+            this.restartGameButton = new Button("Restart game");
+            this.restartGameButton.setOnMouseClicked(e -> EventBus.fireEvent("restart-game", null));
+
+            this.getChildren().addAll(goToMainMenuButton, restartGameButton);
         }
 
         public void setState(State state) {

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox styleClass="menu-view" alignment="CENTER"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedrake.ui.controllers.QuitGameController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedrake.ui.controllers.MenuController">
     <Label text="The Drake" styleClass="title"/>
     <VBox styleClass="menu-buttons" alignment="CENTER">
         <Button text="Play on this computer" onAction="#startGame"/>
