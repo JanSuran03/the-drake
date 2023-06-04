@@ -89,3 +89,15 @@
 .state-view {
     -fx-padding: 10px;
 }
+
+.state-label {
+    -fx-font-size: 2.2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A1B1F;
+}
+
+.label-pane {
+    -fx-padding: 10px;
+    -fx-background-color: #00ffff; /* aqua */
+    -fx-alignment: center;
+}

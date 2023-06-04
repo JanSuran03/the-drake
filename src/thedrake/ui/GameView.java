@@ -1,14 +1,15 @@
 package thedrake.ui;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameView extends HBox {
+public class GameView extends AnchorPane {
 
     GameState gameState;
     TroopFieldsView troopFieldsView;
@@ -30,7 +31,9 @@ public class GameView extends HBox {
 
     public GameView() {
         TroopFieldsView troopFieldsView = new TroopFieldsView();
-        StateView stateView = new StateView();
+        AnchorPane.setLeftAnchor(troopFieldsView, 0.0);
+        this.stateView = new StateView();
+        AnchorPane.setRightAnchor(stateView, 0.0);
         this.troopFieldsView = troopFieldsView;
         this.getChildren().add(troopFieldsView);
         this.getChildren().add(stateView);
@@ -49,7 +52,6 @@ public class GameView extends HBox {
         this.blueStack().setStack(this.gameState.army(PlayingSide.BLUE).stack());
         this.orangeStack().setStack(this.gameState.army(PlayingSide.ORANGE).stack());
         this.blueStack().setHighlighted(true);
-        this.stateView = new StateView();
         EventBus.registerHandler("unset-all-selected", e -> {
             EventBus.fireEvent("unset-selected-board", null);
             EventBus.fireEvent("unset-selected-stack-1", null);
@@ -77,11 +79,12 @@ public class GameView extends HBox {
         });
         EventBus.registerHandler("set-game-state", ev_data -> {
             this.gameState = (GameState) ev_data.get("gameState");
+            this.stateView.setState(this.gameState.sideOnTurn() == PlayingSide.BLUE
+                    ? StateView.State.BLUE_ON_TURN : StateView.State.ORANGE_ON_TURN);
         });
         EventBus.registerGetter("gameState", ev_data -> this.gameState);
         // on pressing escape, fire "unset-all-selected" event
         this.setOnKeyPressed(e -> {
-            System.out.println(e.getCode().toString());
             if (e.getCode().toString().equals("ESCAPE")) {
                 EventBus.fireEvent("unset-all-selected", null);
             }
@@ -112,17 +115,36 @@ public class GameView extends HBox {
     }
 
     static class StateView extends VBox {
-        public Label stateLabel = new Label();
+        static class StateLabelView extends StackPane {
+            public Label label = new Label();
+
+            public StateLabelView() {
+                label.getStyleClass().add("state-label");
+                this.getChildren().add(label);
+                this.getStyleClass().add("label-pane");
+            }
+
+            public void setText(String text) {
+                label.setText(text);
+            }
+        }
+        public StateLabelView stateLabel;
         public State state;
 
         public StateView() {
+            stateLabel = new StateLabelView();
             state = State.BLUE_ON_TURN;
             stateLabel.setText(state.toString());
             this.getChildren().add(stateLabel);
             this.getStyleClass().add("state-view");
         }
 
-        enum State {
+        public void setState(State state) {
+            this.state = state;
+            stateLabel.setText(state.toString());
+        }
+
+        public enum State {
             BLUE_ON_TURN, ORANGE_ON_TURN, BLUE_VICTORY, ORANGE_VICTORY;
 
             public String toString() {
