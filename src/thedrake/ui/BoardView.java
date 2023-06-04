@@ -73,9 +73,14 @@ public class BoardView extends GridPane implements Resettable {
                                 if (move.target().equals(target)) {
                                     GameState newGameState = move.execute(currentState);
                                     EventBus.fireEvent("set-game-state", new HashMap<>(Map.of("gameState", newGameState)));
-                                    tiles[finalI][finalJ].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
-                                    tiles[selected[0]][selected[1]].removeImage();
-                                    if (move instanceof StepAndCapture || move instanceof CaptureOnly) {
+                                    if (move instanceof CaptureOnly) { // remove captured troop, but don't move
+                                        tiles[selected[0]][selected[1]].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
+                                        tiles[finalI][finalJ].removeImage();
+                                    } else { // move and possibly remove captured troop, if nothing is captured, just move
+                                        tiles[finalI][finalJ].setImage(Util.flippedImageName(Util.extractImageName(tiles[selected[0]][selected[1]].imageView.getImage().getUrl())));
+                                        tiles[selected[0]][selected[1]].removeImage();
+                                    }
+                                    if (move instanceof StepAndCapture || move instanceof CaptureOnly) { // if captured, remove from army
                                         EventBus.fireEvent("setCapturedArmy", new HashMap<>(Map.of("side", side)));
                                     }
                                     break;
